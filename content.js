@@ -1,66 +1,42 @@
 function applyDarkMode(enabled) {
+  document.body.setAttribute("data-dark-mode", enabled ? "true" : "false");
 
-  document.body.setAttribute(
+  document.documentElement.setAttribute(
     "data-dark-mode",
-    enabled ? "true" : "false"
+    enabled ? "true" : "false",
   );
-
 }
-
 
 function applyTheme(settings) {
+  const root = document.documentElement;
 
-  const root =
-    document.documentElement;
+  root.style.setProperty("--lyrics-color", settings.lyricsColor);
 
-  root.style.setProperty(
-    "--lyrics-color",
-    settings.lyricsColor
-  );
+  root.style.setProperty("--chord-color", settings.chordColor);
 
-  root.style.setProperty(
-    "--chord-color",
-    settings.chordColor
-  );
-
-  root.style.setProperty(
-    "--font-size",
-    settings.fontSize + "px"
-  );
+  root.style.setProperty("--font-size", settings.fontSize + "px");
 
   applyDarkMode(settings.darkMode);
-
 }
-
 
 /* =========================================
    TOOLBAR
 ========================================= */
 
 function createToolbar() {
-
-  const existing =
-    document.querySelector(
-      ".mg-action-bar"
-    );
+  const existing = document.querySelector(".mg-action-bar");
 
   if (existing) return;
 
-  const chordBlock =
-    document.querySelector(
-      'pre[class*="k_vI3"]'
-    );
+  const chordBlock = document.querySelector('pre[class*="k_vI3"]');
 
   if (!chordBlock) return;
 
-  const parent =
-    chordBlock.parentElement;
+  const parent = chordBlock.parentElement;
 
-  const toolbar =
-    document.createElement("section");
+  const toolbar = document.createElement("section");
 
-  toolbar.className =
-    "mg-action-bar";
+  toolbar.className = "mg-action-bar";
 
   toolbar.innerHTML = `
 
@@ -92,300 +68,147 @@ function createToolbar() {
 
   `;
 
-  parent.insertBefore(
-    toolbar,
-    chordBlock
-  );
+  parent.insertBefore(toolbar, chordBlock);
 
-  const slider =
-    toolbar.querySelector(
-      ".mg-column-slider"
-    );
+  const slider = toolbar.querySelector(".mg-column-slider");
 
-  const fullscreenBtn =
-    toolbar.querySelector(
-      ".mg-fullscreen-btn"
-    );
+  const fullscreenBtn = toolbar.querySelector(".mg-fullscreen-btn");
 
-  const exitBtn =
-    toolbar.querySelector(
-      ".mg-exit-btn"
-    );
+  const exitBtn = toolbar.querySelector(".mg-exit-btn");
 
-  chrome.storage.sync.get(
-    "themeSettings",
-    (data) => {
+  chrome.storage.sync.get("themeSettings", (data) => {
+    const settings = data.themeSettings || {};
 
-      const settings =
-        data.themeSettings || {};
+    slider.value = settings.columns || 1;
 
-      slider.value =
-        settings.columns || 1;
+    chordBlock.style.columnCount = settings.columns || 1;
 
-      chordBlock.style.columnCount =
-        settings.columns || 1;
+    applyDarkMode(settings.darkMode);
 
-      applyDarkMode(
-        settings.darkMode
-      );
+    updateToolbarTheme(settings.darkMode);
+  });
 
-      updateToolbarTheme(
-        settings.darkMode
-      );
+  slider.addEventListener("input", () => {
+    chordBlock.style.columnCount = slider.value;
 
+    chrome.storage.sync.get("themeSettings", (data) => {
+      const settings = data.themeSettings || {};
+
+      settings.columns = slider.value;
+
+      chrome.storage.sync.set({
+        themeSettings: settings,
+      });
+    });
+  });
+
+  fullscreenBtn.addEventListener("click", () => {
+    const fullscreenContainer = chordBlock.parentElement;
+
+    if (!document.fullscreenElement) {
+      fullscreenContainer.requestFullscreen();
     }
-  );
+  });
 
-  slider.addEventListener(
-    "input",
-    () => {
-
-      chordBlock.style.columnCount =
-        slider.value;
-
-      chrome.storage.sync.get(
-        "themeSettings",
-        (data) => {
-
-          const settings =
-            data.themeSettings || {};
-
-          settings.columns =
-            slider.value;
-
-          chrome.storage.sync.set({
-            themeSettings: settings
-          });
-
-        }
-      );
-
+  exitBtn.addEventListener("click", () => {
+    if (document.fullscreenElement) {
+      document.exitFullscreen();
     }
-  );
-
-  fullscreenBtn.addEventListener(
-    "click",
-    () => {
-
-      const fullscreenContainer =
-        chordBlock.parentElement;
-
-      if (
-        !document.fullscreenElement
-      ) {
-
-        fullscreenContainer.requestFullscreen();
-
-      }
-
-    }
-  );
-
-  exitBtn.addEventListener(
-    "click",
-    () => {
-
-      if (
-        document.fullscreenElement
-      ) {
-
-        document.exitFullscreen();
-
-      }
-
-    }
-  );
-
+  });
 }
-
 
 function updateToolbarTheme(isDark) {
+  const fullscreenBtn = document.querySelector(".mg-fullscreen-btn");
 
-  const fullscreenBtn =
-    document.querySelector(
-      ".mg-fullscreen-btn"
-    );
+  const exitBtn = document.querySelector(".mg-exit-btn");
 
-  const exitBtn =
-    document.querySelector(
-      ".mg-exit-btn"
-    );
-
-  const slider =
-    document.querySelector(
-      ".mg-column-slider"
-    );
+  const slider = document.querySelector(".mg-column-slider");
 
   if (isDark) {
+    if (fullscreenBtn) fullscreenBtn.style.color = "white";
 
-    if (fullscreenBtn)
-      fullscreenBtn.style.color =
-        "white";
+    if (exitBtn) exitBtn.style.color = "white";
 
-    if (exitBtn)
-      exitBtn.style.color =
-        "white";
-
-    if (slider)
-      slider.style.filter =
-        "invert(1)";
-
+    if (slider) slider.style.filter = "invert(1)";
   } else {
+    if (fullscreenBtn) fullscreenBtn.style.color = "black";
 
-    if (fullscreenBtn)
-      fullscreenBtn.style.color =
-        "black";
+    if (exitBtn) exitBtn.style.color = "black";
 
-    if (exitBtn)
-      exitBtn.style.color =
-        "black";
-
-    if (slider)
-      slider.style.filter =
-        "invert(0)";
-
+    if (slider) slider.style.filter = "invert(0)";
   }
-
 }
-
 
 /* =========================================
    FULLSCREEN EVENTS
 ========================================= */
 
-document.addEventListener(
-  "fullscreenchange",
-  () => {
+document.addEventListener("fullscreenchange", () => {
+  const exitBtn = document.querySelector(".mg-exit-btn");
 
-    const exitBtn =
-      document.querySelector(
-        ".mg-exit-btn"
-      );
+  const fullscreenBtn = document.querySelector(".mg-fullscreen-btn");
 
-    const fullscreenBtn =
-      document.querySelector(
-        ".mg-fullscreen-btn"
-      );
+  if (document.fullscreenElement) {
+    if (exitBtn) exitBtn.style.display = "block";
 
-    if (
-      document.fullscreenElement
-    ) {
+    if (fullscreenBtn) fullscreenBtn.style.display = "none";
+  } else {
+    if (exitBtn) exitBtn.style.display = "none";
 
-      if (exitBtn)
-        exitBtn.style.display =
-          "block";
-
-      if (fullscreenBtn)
-        fullscreenBtn.style.display =
-          "none";
-
-    } else {
-
-      if (exitBtn)
-        exitBtn.style.display =
-          "none";
-
-      if (fullscreenBtn)
-        fullscreenBtn.style.display =
-          "block";
-
-    }
-
+    if (fullscreenBtn) fullscreenBtn.style.display = "block";
   }
-);
-
+});
 
 /* =========================================
    LOAD SETTINGS
 ========================================= */
 
-chrome.storage.sync.get(
-  "themeSettings",
-  (data) => {
+chrome.storage.sync.get("themeSettings", (data) => {
+  if (data.themeSettings) {
+    applyTheme(data.themeSettings);
+  } else {
+    applyTheme({
+      lyricsColor: "#000000",
 
-    if (data.themeSettings) {
+      chordColor: "#000000",
 
-      applyTheme(
-        data.themeSettings
-      );
+      fontSize: 24,
 
-    } else {
+      darkMode: false,
 
-      applyTheme({
-
-        lyricsColor: "#000000",
-
-        chordColor: "#000000",
-
-        fontSize: 24,
-
-        darkMode: false,
-
-        columns: 1
-
-      });
-
-    }
-
+      columns: 1,
+    });
   }
-);
-
+});
 
 /* =========================================
    LIVE UPDATES
 ========================================= */
 
-chrome.runtime.onMessage.addListener(
-  (request) => {
+chrome.runtime.onMessage.addListener((request) => {
+  if (request.action === "updateTheme") {
+    applyTheme(request.settings);
 
-    if (
-      request.action ===
-      "updateTheme"
-    ) {
-
-      applyTheme(
-        request.settings
-      );
-
-      updateToolbarTheme(
-        request.settings.darkMode
-      );
-
-    }
-
+    updateToolbarTheme(request.settings.darkMode);
   }
-);
-
+});
 
 /* =========================================
    ENSURE TOOLBAR
 ========================================= */
 
 function ensureToolbarExists() {
-
-  const existing =
-    document.querySelector(
-      ".mg-action-bar"
-    );
+  const existing = document.querySelector(".mg-action-bar");
 
   if (!existing) {
-
     createToolbar();
-
   }
-
 }
 
-
 setTimeout(() => {
-
   createToolbar();
-
 }, 1500);
 
-
 setInterval(() => {
-
   ensureToolbarExists();
-
 }, 2000);

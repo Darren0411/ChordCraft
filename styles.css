@@ -25,6 +25,8 @@ code.QsmqP {
 
   font-family: monospace !important;
 
+  background: transparent !important;
+
 }
 
 
@@ -37,6 +39,29 @@ span[data-name] {
   color: var(--chord-color) !important;
 
   font-weight: bold !important;
+
+}
+
+
+/* =========================================
+   LIGHT MODE
+========================================= */
+
+body[data-dark-mode="false"] {
+
+  background: white !important;
+
+}
+
+
+body[data-dark-mode="false"] main,
+body[data-dark-mode="false"] section,
+body[data-dark-mode="false"] article,
+body[data-dark-mode="false"] div,
+body[data-dark-mode="false"] pre,
+body[data-dark-mode="false"] code {
+
+  background: white !important;
 
 }
 
@@ -55,16 +80,36 @@ body[data-dark-mode="true"] {
 body[data-dark-mode="true"] main,
 body[data-dark-mode="true"] section,
 body[data-dark-mode="true"] article,
-body[data-dark-mode="true"] div {
+body[data-dark-mode="true"] div,
+body[data-dark-mode="true"] pre,
+body[data-dark-mode="true"] code {
 
   background: #0f0f10 !important;
 
 }
 
 
-body[data-dark-mode="true"] pre {
+/* =========================================
+   KEEP USER SELECTED COLORS
+========================================= */
 
-  background: #0f0f10 !important;
+body[data-dark-mode="true"] pre.k_vI3,
+body[data-dark-mode="true"] pre[class*="k_vI3"],
+body[data-dark-mode="true"] code.QsmqP,
+
+body[data-dark-mode="false"] pre.k_vI3,
+body[data-dark-mode="false"] pre[class*="k_vI3"],
+body[data-dark-mode="false"] code.QsmqP {
+
+  color: var(--lyrics-color) !important;
+
+}
+
+
+body[data-dark-mode="true"] span[data-name],
+body[data-dark-mode="false"] span[data-name] {
+
+  color: var(--chord-color) !important;
 
 }
 
@@ -89,7 +134,13 @@ body[data-dark-mode="true"] pre {
 
   border: 1px solid #ddd;
 
-  background: #f5f5f5;
+  background: #f5f5f5 !important;
+
+  position: sticky;
+
+  top: 0;
+
+  z-index: 999999;
 
 }
 
@@ -101,6 +152,26 @@ body[data-dark-mode="true"] .mg-action-bar {
   border-color: #333 !important;
 
   color: white !important;
+
+}
+
+
+body[data-dark-mode="false"] .mg-action-bar {
+
+  background: #f5f5f5 !important;
+
+  border-color: #ddd !important;
+
+  color: black !important;
+
+}
+
+
+.mg-title {
+
+  font-weight: bold;
+
+  font-size: 18px;
 
 }
 
@@ -134,11 +205,98 @@ body[data-dark-mode="true"] .mg-action-bar {
 
   cursor: pointer;
 
+  font-weight: 600;
+
 }
 
+
+/* =========================================
+   BUTTON COLORS
+========================================= */
+
+body[data-dark-mode="true"] .mg-fullscreen-btn,
+body[data-dark-mode="true"] .mg-exit-btn {
+
+  color: white !important;
+
+}
+
+
+body[data-dark-mode="false"] .mg-fullscreen-btn,
+body[data-dark-mode="false"] .mg-exit-btn {
+
+  color: black !important;
+
+}
+
+
+/* =========================================
+   EXIT BUTTON
+========================================= */
 
 .mg-exit-btn {
 
   display: none;
+
+}
+
+
+/* =========================================
+   FULLSCREEN
+========================================= */
+
+:fullscreen {
+
+  background: inherit !important;
+
+}
+
+
+/* LIGHT THEME FULLSCREEN */
+
+body[data-dark-mode="false"] :fullscreen,
+body[data-dark-mode="false"] :fullscreen pre,
+body[data-dark-mode="false"] :fullscreen section,
+body[data-dark-mode="false"] :fullscreen code,
+body[data-dark-mode="false"] :fullscreen div {
+
+  background: white !important;
+
+  color: var(--lyrics-color) !important;
+
+}
+
+
+/* DARK THEME FULLSCREEN */
+
+body[data-dark-mode="true"] :fullscreen,
+body[data-dark-mode="true"] :fullscreen pre,
+body[data-dark-mode="true"] :fullscreen section,
+body[data-dark-mode="true"] :fullscreen code,
+body[data-dark-mode="true"] :fullscreen div {
+
+  background: #0f0f10 !important;
+
+  color: var(--lyrics-color) !important;
+
+}
+
+
+/* =========================================
+   SCROLLBAR
+========================================= */
+
+body[data-dark-mode="true"]::-webkit-scrollbar {
+
+  width: 10px;
+
+}
+
+
+body[data-dark-mode="true"]::-webkit-scrollbar-thumb {
+
+  background: #333;
+
+  border-radius: 10px;
 
 }
