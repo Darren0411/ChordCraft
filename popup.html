@@ -1,0 +1,203 @@
+<!doctype html>
+<html>
+  <head>
+    <title>ChordCraft</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        width: 320px;
+
+        padding: 20px;
+
+        font-family: Inter, Arial, sans-serif;
+
+        background: #0f0f11;
+
+        color: white;
+      }
+
+      .container {
+        background: #17181c;
+
+        border-radius: 18px;
+
+        padding: 22px;
+
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+        border: 1px solid #2a2a2f;
+      }
+
+      h1 {
+        font-size: 28px;
+
+        margin-bottom: 24px;
+
+        font-weight: 700;
+
+        letter-spacing: -1px;
+      }
+
+      .setting {
+        margin-bottom: 22px;
+      }
+
+      .setting-header {
+        display: flex;
+
+        justify-content: space-between;
+
+        align-items: center;
+
+        margin-bottom: 10px;
+      }
+
+      .setting-header span {
+        font-size: 15px;
+
+        color: #d0d0d0;
+      }
+
+      input[type="color"] {
+        width: 100%;
+
+        height: 50px;
+
+        border: none;
+
+        border-radius: 12px;
+
+        cursor: pointer;
+
+        background: none;
+
+        overflow: hidden;
+      }
+
+      input[type="color"]::-webkit-color-swatch {
+        border: none;
+
+        border-radius: 12px;
+      }
+
+      input[type="range"] {
+        width: 100%;
+
+        accent-color: #ffb000;
+
+        cursor: pointer;
+      }
+
+      .font-size-value {
+        color: #ffb000;
+
+        font-weight: 600;
+
+        font-size: 14px;
+      }
+
+      button {
+        width: 100%;
+
+        padding: 14px;
+
+        margin-top: 10px;
+
+        border: none;
+
+        border-radius: 14px;
+
+        background: linear-gradient(135deg, #ffb000, #ff8a00);
+
+        color: black;
+
+        font-size: 16px;
+
+        font-weight: 700;
+
+        cursor: pointer;
+
+        transition: 0.2s ease;
+      }
+
+      #fullscreenBtn {
+        margin-top: 12px;
+
+        background: #2a2a2f;
+
+        color: white;
+      }
+
+      button:hover {
+        transform: translateY(-2px);
+
+        opacity: 0.95;
+      }
+
+      .footer {
+        margin-top: 16px;
+
+        text-align: center;
+
+        font-size: 12px;
+
+        color: #777;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>ChordCraft</h1>
+
+      <div class="setting">
+        <div class="setting-header">
+          <span>Chord Color</span>
+        </div>
+
+        <input type="color" id="chordColor" />
+      </div>
+
+      <div class="setting">
+        <div class="setting-header">
+          <span>Lyrics Color</span>
+        </div>
+
+        <input type="color" id="lyricsColor" />
+      </div>
+
+      <div class="setting">
+        <div class="setting-header">
+          <span>Font Size</span>
+
+          <span class="font-size-value" id="fontSizeValue"> 24px </span>
+        </div>
+
+        <input type="range" id="fontSize" min="14" max="40" value="24" />
+      </div>
+      <div class="setting">
+        <div class="setting-header">
+          <span>Columns</span>
+
+          <span class="font-size-value" id="columnValue"> 1 </span>
+        </div>
+
+        <input type="range" id="columns" min="1" max="4" value="1" />
+      </div>
+
+      <button id="fullscreenBtn">Fullscreen Mode</button>
+
+      <button id="saveBtn">Save Theme</button>
+
+      <div class="footer">Built for musicians 🎸</div>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

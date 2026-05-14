@@ -1,0 +1,37 @@
+:root {
+
+  --lyrics-color: #000000;
+
+  --chord-color: #000000;
+
+  --font-size: 24px;
+
+  --column-count: 1;
+
+}
+
+
+/* MAIN TAB CONTENT */
+pre.k_vI3 {
+
+  color: var(--lyrics-color) !important;
+
+  font-size: var(--font-size) !important;
+
+  line-height: 1.8 !important;
+
+  column-count: var(--column-count);
+
+  column-gap: 80px;
+
+}
+
+
+/* CHORDS */
+span[data-name] {
+
+  color: var(--chord-color) !important;
+
+  font-weight: bold !important;
+
+}
