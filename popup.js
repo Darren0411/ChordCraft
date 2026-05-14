@@ -1,158 +1,112 @@
-const chordColor =
-  document.getElementById("chordColor");
+const chordColor = document.getElementById("chordColor");
 
-const lyricsColor =
-  document.getElementById("lyricsColor");
+const lyricsColor = document.getElementById("lyricsColor");
 
-const fontSize =
-  document.getElementById("fontSize");
+const fontSize = document.getElementById("fontSize");
 
-const fontSizeValue =
-  document.getElementById("fontSizeValue");
+const fontSizeValue = document.getElementById("fontSizeValue");
 
-const columns =
-  document.getElementById("columns");
+const darkMode = document.getElementById("darkMode");
 
-const columnValue =
-  document.getElementById("columnValue");
+const saveBtn = document.getElementById("saveBtn");
 
-const saveBtn =
-  document.getElementById("saveBtn");
-
-const fullscreenBtn =
-  document.getElementById("fullscreenBtn");
-
+const fullscreenBtn = document.getElementById("fullscreenBtn");
 
 // LIVE FONT SIZE UPDATE
 fontSize.addEventListener("input", () => {
-
-  fontSizeValue.textContent =
-    `${fontSize.value}px`;
-
+  fontSizeValue.textContent = `${fontSize.value}px`;
 });
-
-
-// LIVE COLUMN UPDATE
-columns.addEventListener("input", () => {
-
-  columnValue.textContent =
-    columns.value;
-
-});
-
 
 // LOAD SAVED SETTINGS
-chrome.storage.sync.get(
-  "themeSettings",
-  (data) => {
+chrome.storage.sync.get("themeSettings", (data) => {
+  if (data.themeSettings) {
+    const settings = data.themeSettings;
 
-    if (data.themeSettings) {
+    chordColor.value = settings.chordColor || "#000000";
 
-      chordColor.value =
-        data.themeSettings.chordColor || "#000000";
+    lyricsColor.value = settings.lyricsColor || "#000000";
 
-      lyricsColor.value =
-        data.themeSettings.lyricsColor || "#000000";
+    fontSize.value = settings.fontSize || 24;
 
-      fontSize.value =
-        data.themeSettings.fontSize || 24;
+    darkMode.checked = settings.darkMode || false;
 
-      columns.value =
-        data.themeSettings.columns || 1;
+    fontSizeValue.textContent = `${fontSize.value}px`;
+  } else {
+    // DEFAULT VALUES
+    chordColor.value = "#000000";
 
-      fontSizeValue.textContent =
-        `${fontSize.value}px`;
+    lyricsColor.value = "#000000";
 
-      columnValue.textContent =
-        columns.value;
+    fontSize.value = 24;
 
-    } else {
+    darkMode.checked = false;
 
-      // DEFAULT VALUES
-      chordColor.value = "#000000";
-
-      lyricsColor.value = "#000000";
-
-      fontSize.value = 24;
-
-      columns.value = 1;
-
-      fontSizeValue.textContent = "24px";
-
-      columnValue.textContent = "1";
-
-    }
-
+    fontSizeValue.textContent = "24px";
   }
-);
-
+});
 
 // SAVE SETTINGS
 saveBtn.addEventListener("click", () => {
+  chrome.storage.sync.get("themeSettings", (data) => {
+    const oldSettings = data.themeSettings || {};
 
-  const settings = {
+    const settings = {
+      chordColor: chordColor.value,
 
-    chordColor: chordColor.value,
+      lyricsColor: lyricsColor.value,
 
-    lyricsColor: lyricsColor.value,
+      fontSize: fontSize.value,
 
-    fontSize: fontSize.value,
+      darkMode: darkMode.checked,
 
-    columns: columns.value
+      // PRESERVE COLUMNS
+      columns: oldSettings.columns || 1,
+    };
 
-  };
+    chrome.storage.sync.set(
+      {
+        themeSettings: settings,
+      },
 
-  chrome.storage.sync.set(
-    {
-      themeSettings: settings
-    },
+      () => {
+        chrome.tabs.query(
+          {
+            active: true,
+            currentWindow: true,
+          },
 
-    () => {
+          (tabs) => {
+            chrome.tabs.sendMessage(
+              tabs[0].id,
+              {
+                action: "updateTheme",
 
-      chrome.tabs.query(
-        {
-          active: true,
-          currentWindow: true
-        },
+                settings: settings,
+              },
 
-        (tabs) => {
-
-          chrome.tabs.sendMessage(
-            tabs[0].id,
-            {
-              action: "updateTheme",
-              settings: settings
-            }
-          );
-
-        }
-      );
-
-    }
-  );
-
+              () => {
+                window.close();
+              },
+            );
+          },
+        );
+      },
+    );
+  });
 });
-
 
 // FULLSCREEN BUTTON
 fullscreenBtn.addEventListener("click", () => {
-
   chrome.tabs.query(
     {
       active: true,
-      currentWindow: true
+      currentWindow: true,
     },
 
     (tabs) => {
-
-      chrome.tabs.sendMessage(
-        tabs[0].id,
-        {
-          action: "toggleFullscreen"
-        }
-      );
-
-    }
+      chrome.tabs.sendMessage(tabs[0].id, {
+        action: "toggleFullscreen",
+      });
+    },
   );
-
 });

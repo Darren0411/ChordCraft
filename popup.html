@@ -149,6 +149,68 @@
 
         color: #777;
       }
+
+      /* TOGGLE SWITCH */
+
+      .switch {
+        position: relative;
+
+        display: inline-block;
+
+        width: 60px;
+
+        height: 32px;
+      }
+
+      .switch input {
+        opacity: 0;
+
+        width: 0;
+
+        height: 0;
+      }
+
+      .slider {
+        position: absolute;
+
+        cursor: pointer;
+
+        inset: 0;
+
+        background-color: #2d2d35;
+
+        transition: 0.3s;
+
+        border-radius: 40px;
+      }
+
+      .slider:before {
+        position: absolute;
+
+        content: "";
+
+        height: 24px;
+
+        width: 24px;
+
+        left: 4px;
+
+        bottom: 4px;
+
+        background-color: white;
+
+        transition: 0.3s;
+
+        border-radius: 50%;
+      }
+
+      input:checked + .slider {
+        background: linear-gradient(135deg, #ffb000, #ff8a00);
+      }
+
+      input:checked + .slider:before {
+        transform: translateX(28px);
+      }
     </style>
   </head>
 
@@ -183,12 +245,13 @@
       </div>
       <div class="setting">
         <div class="setting-header">
-          <span>Columns</span>
-
-          <span class="font-size-value" id="columnValue"> 1 </span>
+          <span>Dark Mode</span>
         </div>
 
-        <input type="range" id="columns" min="1" max="4" value="1" />
+        <label class="switch">
+          <input type="checkbox" id="darkMode" />
+          <span class="slider"></span>
+        </label>
       </div>
 
       <button id="fullscreenBtn">Fullscreen Mode</button>
