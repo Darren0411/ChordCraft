@@ -22,19 +22,52 @@ The extension allows users to customize the appearance of lyrics and chords for 
 
 ## Installation
 
-1.Download or Clone the Repository
+### 1. Clone the repository
 
-2.Open Chrome and go to the Extensions page
+```bash
+git clone https://github.com/your-username/chordcraft.git
+2. Open Chrome Extensions
 
-   Visit: chrome://extensions/
-   Enable Developer mode (top right)
+Navigate to:
 
-3.Load the Extension
+chrome://extensions
+3. Enable Developer Mode
 
-   Click Load unpacked
-   Select the chordcraft folder you just cloned/downloaded
+Turn on the "Developer mode" toggle from the top-right corner.
 
-4.You're ready!
+4. Load the Extension
 
-   Visit any Ultimate Guitar tab page
-   Click the 🎸 ChordCraft icon in your Chrome toolbar to customize your theme
+Click:
+
+Load unpacked
+
+Then select the ChordCraft project folder.
+
+5. Open Ultimate Guitar
+
+Visit any Ultimate Guitar chord page:
+
+https://tabs.ultimate-guitar.com/
+6. Use the Extension
+Click the ChordCraft extension icon in the Chrome toolbar
+Customize:
+Chord colors
+Lyrics colors
+Font size
+Column layout
+Changes are applied instantly and saved automatically
+Project Structure
+ChordCraft/
+│
+├── manifest.json
+├── popup.html
+├── popup.js
+├── content.js
+├── styles.css
+├── README.md
+│
+├── icons/
+│   ├── icon16.png
+│   ├── icon32.png
+│   ├── icon48.png
+│   └── icon128.png
