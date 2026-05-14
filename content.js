@@ -1,3 +1,13 @@
+function applyDarkMode(enabled) {
+
+  document.body.setAttribute(
+    "data-dark-mode",
+    enabled ? "true" : "false"
+  );
+
+}
+
+
 function applyTheme(settings) {
 
   const root =
@@ -15,172 +25,92 @@ function applyTheme(settings) {
 
   root.style.setProperty(
     "--font-size",
-    `${settings.fontSize}px`
+    settings.fontSize + "px"
   );
 
-  root.style.setProperty(
-    "--column-count",
-    settings.columns || 1
-  );
+  applyDarkMode(settings.darkMode);
 
 }
 
 
-// CREATE ACTION BAR ON PAGE
-function injectActionBar() {
+/* =========================================
+   TOOLBAR
+========================================= */
 
-  // Prevent duplicates
-  if (
+function createToolbar() {
+
+  const existing =
     document.querySelector(
       ".mg-action-bar"
-    )
-  ) {
-    return;
-  }
-
-  // Find tuning section
-  const tuningSection =
-    document.querySelector(
-      'section.s-juq'
     );
 
-  if (!tuningSection) return;
+  if (existing) return;
 
-  // Create bar
-  const bar =
+  const chordBlock =
+    document.querySelector(
+      'pre[class*="k_vI3"]'
+    );
+
+  if (!chordBlock) return;
+
+  const parent =
+    chordBlock.parentElement;
+
+  const toolbar =
     document.createElement("section");
 
-  bar.className =
+  toolbar.className =
     "mg-action-bar";
 
-  // Left title
-  const title =
-    document.createElement("p");
+  toolbar.innerHTML = `
 
-  title.textContent =
-    "ChordCraft";
+    <p class="mg-title">
+      ChordCraft
+    </p>
 
-  // Columns control
-  const columnWrapper =
-    document.createElement("div");
+    <div class="mg-column-control">
 
-  columnWrapper.className =
-    "mg-column-control";
+      <span>Columns</span>
 
-  const label =
-    document.createElement("label");
+      <input
+        type="range"
+        min="1"
+        max="4"
+        value="1"
+        class="mg-column-slider"
+      />
 
-  label.textContent =
-    "Columns";
+    </div>
+
+    <button class="mg-fullscreen-btn">
+      ⛶ Fullscreen
+    </button>
+
+    <button class="mg-exit-btn">
+      ✕ Exit Fullscreen
+    </button>
+
+  `;
+
+  parent.insertBefore(
+    toolbar,
+    chordBlock
+  );
 
   const slider =
-    document.createElement("input");
-
-  slider.type = "range";
-
-  slider.min = 1;
-
-  slider.max = 4;
-
-  slider.value =
-    getComputedStyle(
-      document.documentElement
-    ).getPropertyValue(
-      "--column-count"
-    ) || 1;
-
-  slider.addEventListener(
-    "input",
-    () => {
-
-      document.documentElement
-        .style.setProperty(
-          "--column-count",
-          slider.value
-        );
-
-      chrome.storage.sync.get(
-        "themeSettings",
-        (data) => {
-
-          const updated =
-            {
-              ...data.themeSettings,
-              columns:
-                slider.value
-            };
-
-          chrome.storage.sync.set(
-            {
-              themeSettings:
-                updated
-            }
-          );
-
-        }
-      );
-
-    }
-  );
-
-  columnWrapper.appendChild(
-    label
-  );
-
-  columnWrapper.appendChild(
-    slider
-  );
-
-  // Fullscreen button
-  const fullscreenBtn =
-    document.createElement("div");
-
-  fullscreenBtn.className =
-    "mg-enter-fullscreen";
-
-  fullscreenBtn.innerHTML =
-    "↗ Fullscreen";
-
-  fullscreenBtn.addEventListener(
-    "click",
-    () => {
-
-      openPerformanceMode();
-
-    }
-  );
-
-  // Append
-  bar.appendChild(title);
-
-  bar.appendChild(columnWrapper);
-
-  bar.appendChild(
-    fullscreenBtn
-  );
-
-  tuningSection.prepend(bar);
-
-}
-
-
-// PERFORMANCE MODE
-function openPerformanceMode() {
-
-  if (
-    document.getElementById(
-      "chordcraft-overlay"
-    )
-  ) {
-    return;
-  }
-
-  const chordSheet =
-    document.querySelector(
-      "pre.k_vI3"
+    toolbar.querySelector(
+      ".mg-column-slider"
     );
 
-  if (!chordSheet) return;
+  const fullscreenBtn =
+    toolbar.querySelector(
+      ".mg-fullscreen-btn"
+    );
+
+  const exitBtn =
+    toolbar.querySelector(
+      ".mg-exit-btn"
+    );
 
   chrome.storage.sync.get(
     "themeSettings",
@@ -189,166 +119,79 @@ function openPerformanceMode() {
       const settings =
         data.themeSettings || {};
 
-      const overlay =
-        document.createElement("div");
-
-      overlay.id =
-        "chordcraft-overlay";
-
-      // DARK MODE ONLY FOR FULLSCREEN
-      if (settings.darkMode) {
-
-        overlay.classList.add(
-          "cc-dark-overlay"
-        );
-
-      }
-
-      // TOOLBAR
-      const toolbar =
-        document.createElement("div");
-
-      toolbar.id =
-        "chordcraft-toolbar";
-
-      const logo =
-        document.createElement("div");
-
-      logo.textContent =
-        "ChordCraft";
-
-      const controls =
-        document.createElement("div");
-
-      controls.className =
-        "cc-controls";
-
-      // COLUMN LABEL
-      const columnLabel =
-        document.createElement("span");
-
-      columnLabel.textContent =
-        "Columns";
-
-      // COLUMN SLIDER
-      const slider =
-        document.createElement("input");
-
-      slider.type = "range";
-
-      slider.min = 1;
-
-      slider.max = 4;
-
       slider.value =
         settings.columns || 1;
 
-      // EXIT BUTTON
-      const exitBtn =
-        document.createElement("button");
-
-      exitBtn.id =
-        "cc-exit-btn";
-
-      exitBtn.innerHTML =
-        "↗ Exit fullscreen";
-
-      // CONTENT
-      const chordContainer =
-        document.createElement("div");
-
-      chordContainer.id =
-        "cc-content";
-
-      chordContainer.innerHTML =
-        chordSheet.innerHTML;
-
-      chordContainer.style.color =
-        settings.lyricsColor;
-
-      chordContainer.style.fontSize =
-        `${settings.fontSize}px`;
-
-      chordContainer.style.columnCount =
+      chordBlock.style.columnCount =
         settings.columns || 1;
 
-      chordContainer.style.columnGap =
-        "80px";
+      applyDarkMode(
+        settings.darkMode
+      );
 
-      // CHORD STYLING
-      chordContainer
-        .querySelectorAll(
-          "span[data-name]"
-        )
-        .forEach((el) => {
+      updateToolbarTheme(
+        settings.darkMode
+      );
 
-          el.style.color =
-            settings.chordColor;
+    }
+  );
 
-          el.style.fontWeight =
-            "bold";
+  slider.addEventListener(
+    "input",
+    () => {
 
-        });
+      chordBlock.style.columnCount =
+        slider.value;
 
-      // LIVE COLUMN CHANGE
-      slider.addEventListener(
-        "input",
-        () => {
+      chrome.storage.sync.get(
+        "themeSettings",
+        (data) => {
 
-          chordContainer.style.columnCount =
+          const settings =
+            data.themeSettings || {};
+
+          settings.columns =
             slider.value;
 
-        }
-      );
-
-      // EXIT
-      exitBtn.addEventListener(
-        "click",
-        () => {
-
-          overlay.remove();
-
-          document.body.style.overflow =
-            "";
+          chrome.storage.sync.set({
+            themeSettings: settings
+          });
 
         }
       );
 
-      // BUILD UI
-      controls.appendChild(
-        columnLabel
-      );
+    }
+  );
 
-      controls.appendChild(
-        slider
-      );
+  fullscreenBtn.addEventListener(
+    "click",
+    () => {
 
-      controls.appendChild(
-        exitBtn
-      );
+      const fullscreenContainer =
+        chordBlock.parentElement;
 
-      toolbar.appendChild(
-        logo
-      );
+      if (
+        !document.fullscreenElement
+      ) {
 
-      toolbar.appendChild(
-        controls
-      );
+        fullscreenContainer.requestFullscreen();
 
-      overlay.appendChild(
-        toolbar
-      );
+      }
 
-      overlay.appendChild(
-        chordContainer
-      );
+    }
+  );
 
-      document.body.appendChild(
-        overlay
-      );
+  exitBtn.addEventListener(
+    "click",
+    () => {
 
-      document.body.style.overflow =
-        "hidden";
+      if (
+        document.fullscreenElement
+      ) {
+
+        document.exitFullscreen();
+
+      }
 
     }
   );
@@ -356,7 +199,106 @@ function openPerformanceMode() {
 }
 
 
-// LOAD SETTINGS
+function updateToolbarTheme(isDark) {
+
+  const fullscreenBtn =
+    document.querySelector(
+      ".mg-fullscreen-btn"
+    );
+
+  const exitBtn =
+    document.querySelector(
+      ".mg-exit-btn"
+    );
+
+  const slider =
+    document.querySelector(
+      ".mg-column-slider"
+    );
+
+  if (isDark) {
+
+    if (fullscreenBtn)
+      fullscreenBtn.style.color =
+        "white";
+
+    if (exitBtn)
+      exitBtn.style.color =
+        "white";
+
+    if (slider)
+      slider.style.filter =
+        "invert(1)";
+
+  } else {
+
+    if (fullscreenBtn)
+      fullscreenBtn.style.color =
+        "black";
+
+    if (exitBtn)
+      exitBtn.style.color =
+        "black";
+
+    if (slider)
+      slider.style.filter =
+        "invert(0)";
+
+  }
+
+}
+
+
+/* =========================================
+   FULLSCREEN EVENTS
+========================================= */
+
+document.addEventListener(
+  "fullscreenchange",
+  () => {
+
+    const exitBtn =
+      document.querySelector(
+        ".mg-exit-btn"
+      );
+
+    const fullscreenBtn =
+      document.querySelector(
+        ".mg-fullscreen-btn"
+      );
+
+    if (
+      document.fullscreenElement
+    ) {
+
+      if (exitBtn)
+        exitBtn.style.display =
+          "block";
+
+      if (fullscreenBtn)
+        fullscreenBtn.style.display =
+          "none";
+
+    } else {
+
+      if (exitBtn)
+        exitBtn.style.display =
+          "none";
+
+      if (fullscreenBtn)
+        fullscreenBtn.style.display =
+          "block";
+
+    }
+
+  }
+);
+
+
+/* =========================================
+   LOAD SETTINGS
+========================================= */
+
 chrome.storage.sync.get(
   "themeSettings",
   (data) => {
@@ -367,52 +309,83 @@ chrome.storage.sync.get(
         data.themeSettings
       );
 
-
     } else {
 
       applyTheme({
+
         lyricsColor: "#000000",
+
         chordColor: "#000000",
+
         fontSize: 24,
+
+        darkMode: false,
+
         columns: 1
+
       });
 
     }
 
-    // Inject UI
-    setTimeout(() => {
-
-      injectActionBar();
-
-    }, 1500);
-
   }
 );
 
 
-// MESSAGE LISTENER
+/* =========================================
+   LIVE UPDATES
+========================================= */
+
 chrome.runtime.onMessage.addListener(
-  (message) => {
+  (request) => {
 
     if (
-      message.action ===
+      request.action ===
       "updateTheme"
     ) {
 
       applyTheme(
-        message.settings
+        request.settings
       );
 
-    }
-
-    if (
-      message.action ===
-      "toggleFullscreen"
-    ) {
-
-      openPerformanceMode();
+      updateToolbarTheme(
+        request.settings.darkMode
+      );
 
     }
 
   }
 );
+
+
+/* =========================================
+   ENSURE TOOLBAR
+========================================= */
+
+function ensureToolbarExists() {
+
+  const existing =
+    document.querySelector(
+      ".mg-action-bar"
+    );
+
+  if (!existing) {
+
+    createToolbar();
+
+  }
+
+}
+
+
+setTimeout(() => {
+
+  createToolbar();
+
+}, 1500);
+
+
+setInterval(() => {
+
+  ensureToolbarExists();
+
+}, 2000);

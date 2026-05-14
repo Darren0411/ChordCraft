@@ -6,28 +6,32 @@
 
   --font-size: 24px;
 
-  --column-count: 1;
-
 }
 
 
-/* MAIN TAB CONTENT */
-pre.k_vI3 {
+/* =========================================
+   MAIN CHORD TEXT
+========================================= */
+
+pre.k_vI3,
+pre[class*="k_vI3"],
+code.QsmqP {
 
   color: var(--lyrics-color) !important;
 
   font-size: var(--font-size) !important;
 
-  line-height: 1.8 !important;
+  line-height: 1.9 !important;
 
-  column-count: var(--column-count);
-
-  column-gap: 80px;
+  font-family: monospace !important;
 
 }
 
 
-/* CHORDS */
+/* =========================================
+   CHORDS
+========================================= */
+
 span[data-name] {
 
   color: var(--chord-color) !important;
@@ -36,77 +40,38 @@ span[data-name] {
 
 }
 
-#chordcraft-overlay {
 
-  position: fixed;
+/* =========================================
+   DARK MODE
+========================================= */
 
-  inset: 0;
+body[data-dark-mode="true"] {
 
-  background: white;
-
-  z-index: 999999;
-
-  overflow-y: auto;
-
-  padding: 20px;
+  background: #0f0f10 !important;
 
 }
 
 
-#chordcraft-toolbar {
+body[data-dark-mode="true"] main,
+body[data-dark-mode="true"] section,
+body[data-dark-mode="true"] article,
+body[data-dark-mode="true"] div {
 
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  border: 1px solid #ddd;
-
-  padding: 14px 18px;
-
-  margin-bottom: 30px;
-
-  font-family: monospace;
-
-  font-size: 18px;
+  background: #0f0f10 !important;
 
 }
 
 
-.cc-controls {
+body[data-dark-mode="true"] pre {
 
-  display: flex;
-
-  align-items: center;
-
-  gap: 16px;
+  background: #0f0f10 !important;
 
 }
 
 
-#cc-content {
-
-  line-height: 1.8;
-
-  white-space: pre-wrap;
-
-}
-
-
-#cc-exit-btn {
-
-  border: none;
-
-  background: transparent;
-
-  cursor: pointer;
-
-  font-size: 16px;
-
-}
-
-/* ACTION BAR */
+/* =========================================
+   TOOLBAR
+========================================= */
 
 .mg-action-bar {
 
@@ -116,15 +81,26 @@ span[data-name] {
 
   justify-content: space-between;
 
-  border: 1px solid #ddd;
+  gap: 20px;
 
   padding: 14px 18px;
 
-  margin-top: 20px;
+  margin-bottom: 16px;
 
-  margin-bottom: 20px;
+  border: 1px solid #ddd;
 
-  font-family: monospace;
+  background: #f5f5f5;
+
+}
+
+
+body[data-dark-mode="true"] .mg-action-bar {
+
+  background: #1a1a1c !important;
+
+  border-color: #333 !important;
+
+  color: white !important;
 
 }
 
@@ -140,139 +116,29 @@ span[data-name] {
 }
 
 
-.mg-enter-fullscreen,
-.mg-dark-mode {
+.mg-column-slider {
 
-  cursor: pointer;
-
-  font-size: 15px;
+  width: 120px;
 
 }
 
 
-/* PERFORMANCE OVERLAY */
-
-#chordcraft-overlay {
-
-  position: fixed;
-
-  inset: 0;
-
-  background: white;
-
-  z-index: 999999;
-
-  overflow-y: auto;
-
-  padding: 20px;
-
-}
-
-
-#chordcraft-toolbar {
-
-  display: flex;
-
-  justify-content: space-between;
-
-  align-items: center;
-
-  border: 1px solid #ddd;
-
-  padding: 14px 18px;
-
-  margin-bottom: 30px;
-
-  font-family: monospace;
-
-  font-size: 18px;
-
-}
-
-
-.cc-controls {
-
-  display: flex;
-
-  align-items: center;
-
-  gap: 16px;
-
-}
-
-
-#cc-content {
-
-  line-height: 1.8;
-
-  white-space: pre-wrap;
-
-}
-
-
-#cc-exit-btn {
+.mg-fullscreen-btn,
+.mg-exit-btn {
 
   border: none;
 
   background: transparent;
 
+  font-size: 15px;
+
   cursor: pointer;
 
-  font-size: 16px;
-
 }
 
 
-/* DARK MODE */
+.mg-exit-btn {
 
-.cc-dark-mode {
-
-  background: #0f0f11 !important;
+  display: none;
 
 }
-
-
-.cc-dark-mode pre.k_vI3 {
-
-  background: #0f0f11 !important;
-
-}
-
-.cc-dark-overlay {
-
-  background: #0f0f11 !important;
-
-  color: white !important;
-
-}
-
-
-.cc-dark-overlay #cc-content {
-
-  color: white !important;
-
-}
-
-
-.cc-dark-overlay #chordcraft-toolbar {
-
-  border-color: #333;
-
-  color: white;
-
-}
-
-
-.cc-dark-overlay button {
-
-  color: white;
-
-}
-
-
-.cc-dark-overlay #chordcraft-toolbar {
-
-  border-color: #333;
-
-}
-

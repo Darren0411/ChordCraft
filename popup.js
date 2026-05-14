@@ -1,112 +1,148 @@
-const chordColor = document.getElementById("chordColor");
+const chordColor =
+  document.getElementById("chordColor");
 
-const lyricsColor = document.getElementById("lyricsColor");
+const lyricsColor =
+  document.getElementById("lyricsColor");
 
-const fontSize = document.getElementById("fontSize");
+const fontSize =
+  document.getElementById("fontSize");
 
-const fontSizeValue = document.getElementById("fontSizeValue");
+const fontSizeValue =
+  document.getElementById("fontSizeValue");
 
-const darkMode = document.getElementById("darkMode");
+const darkMode =
+  document.getElementById("darkMode");
 
-const saveBtn = document.getElementById("saveBtn");
+const saveBtn =
+  document.getElementById("saveBtn");
 
-const fullscreenBtn = document.getElementById("fullscreenBtn");
+const fullscreenBtn =
+  document.getElementById("fullscreenBtn");
 
-// LIVE FONT SIZE UPDATE
-fontSize.addEventListener("input", () => {
-  fontSizeValue.textContent = `${fontSize.value}px`;
-});
 
-// LOAD SAVED SETTINGS
-chrome.storage.sync.get("themeSettings", (data) => {
-  if (data.themeSettings) {
-    const settings = data.themeSettings;
+fontSize.addEventListener(
+  "input",
+  () => {
 
-    chordColor.value = settings.chordColor || "#000000";
+    fontSizeValue.textContent =
+      `${fontSize.value}px`;
 
-    lyricsColor.value = settings.lyricsColor || "#000000";
-
-    fontSize.value = settings.fontSize || 24;
-
-    darkMode.checked = settings.darkMode || false;
-
-    fontSizeValue.textContent = `${fontSize.value}px`;
-  } else {
-    // DEFAULT VALUES
-    chordColor.value = "#000000";
-
-    lyricsColor.value = "#000000";
-
-    fontSize.value = 24;
-
-    darkMode.checked = false;
-
-    fontSizeValue.textContent = "24px";
   }
-});
+);
 
-// SAVE SETTINGS
-saveBtn.addEventListener("click", () => {
-  chrome.storage.sync.get("themeSettings", (data) => {
-    const oldSettings = data.themeSettings || {};
+
+chrome.storage.sync.get(
+  "themeSettings",
+  (data) => {
+
+    if (data.themeSettings) {
+
+      chordColor.value =
+        data.themeSettings.chordColor
+        || "#000000";
+
+      lyricsColor.value =
+        data.themeSettings.lyricsColor
+        || "#000000";
+
+      fontSize.value =
+        data.themeSettings.fontSize
+        || 24;
+
+      darkMode.checked =
+        data.themeSettings.darkMode
+        || false;
+
+      fontSizeValue.textContent =
+        `${fontSize.value}px`;
+
+    }
+
+  }
+);
+
+
+saveBtn.addEventListener(
+  "click",
+  async () => {
 
     const settings = {
-      chordColor: chordColor.value,
 
-      lyricsColor: lyricsColor.value,
+      chordColor:
+        chordColor.value,
 
-      fontSize: fontSize.value,
+      lyricsColor:
+        lyricsColor.value,
 
-      darkMode: darkMode.checked,
+      fontSize:
+        fontSize.value,
 
-      // PRESERVE COLUMNS
-      columns: oldSettings.columns || 1,
+      darkMode:
+        darkMode.checked
+
     };
 
     chrome.storage.sync.set(
       {
-        themeSettings: settings,
+        themeSettings: settings
       },
 
       () => {
+
         chrome.tabs.query(
           {
             active: true,
-            currentWindow: true,
+            currentWindow: true
           },
 
           (tabs) => {
+
             chrome.tabs.sendMessage(
               tabs[0].id,
               {
                 action: "updateTheme",
-
-                settings: settings,
-              },
-
-              () => {
-                window.close();
-              },
+                settings: settings
+              }
             );
-          },
+
+            setTimeout(() => {
+
+              window.close();
+
+            }, 200);
+
+          }
         );
-      },
+
+      }
     );
-  });
-});
 
-// FULLSCREEN BUTTON
-fullscreenBtn.addEventListener("click", () => {
-  chrome.tabs.query(
-    {
-      active: true,
-      currentWindow: true,
-    },
+  }
+);
 
-    (tabs) => {
-      chrome.tabs.sendMessage(tabs[0].id, {
-        action: "toggleFullscreen",
-      });
-    },
-  );
-});
+
+fullscreenBtn.addEventListener(
+  "click",
+  () => {
+
+    chrome.tabs.query(
+      {
+        active: true,
+        currentWindow: true
+      },
+
+      (tabs) => {
+
+        chrome.tabs.sendMessage(
+          tabs[0].id,
+          {
+            action:
+              "toggleFullscreen"
+          }
+        );
+
+      }
+    );
+
+  }
+);
