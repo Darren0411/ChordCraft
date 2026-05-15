@@ -74,42 +74,109 @@ body[data-dark-mode="true"] {
 
   background: #0f0f10 !important;
 
+  color: #f5f5f5 !important;
+
 }
 
+
+/* WHOLE PAGE DARK */
 
 body[data-dark-mode="true"] main,
 body[data-dark-mode="true"] section,
 body[data-dark-mode="true"] article,
 body[data-dark-mode="true"] div,
-body[data-dark-mode="true"] pre,
-body[data-dark-mode="true"] code {
+body[data-dark-mode="true"] aside,
+body[data-dark-mode="true"] header,
+body[data-dark-mode="true"] footer {
 
   background: #0f0f10 !important;
 
 }
 
 
-/* =========================================
-   KEEP USER SELECTED COLORS
-========================================= */
+/* NORMAL WEBSITE TEXT -> LIGHT */
+
+body[data-dark-mode="true"] h1,
+body[data-dark-mode="true"] h2,
+body[data-dark-mode="true"] h3,
+body[data-dark-mode="true"] h4,
+body[data-dark-mode="true"] h5,
+body[data-dark-mode="true"] h6,
+body[data-dark-mode="true"] p,
+body[data-dark-mode="true"] span,
+body[data-dark-mode="true"] a,
+body[data-dark-mode="true"] button,
+body[data-dark-mode="true"] li,
+body[data-dark-mode="true"] label {
+
+  color: #f5f5f5 !important;
+
+}
+
+
+/* KEEP USER CHORD COLORS */
 
 body[data-dark-mode="true"] pre.k_vI3,
 body[data-dark-mode="true"] pre[class*="k_vI3"],
-body[data-dark-mode="true"] code.QsmqP,
+body[data-dark-mode="true"] code.QsmqP {
 
-body[data-dark-mode="false"] pre.k_vI3,
-body[data-dark-mode="false"] pre[class*="k_vI3"],
-body[data-dark-mode="false"] code.QsmqP {
+  background: #0f0f10 !important;
 
   color: var(--lyrics-color) !important;
 
 }
 
 
-body[data-dark-mode="true"] span[data-name],
-body[data-dark-mode="false"] span[data-name] {
+/* KEEP USER CHORD COLOR */
+
+body[data-dark-mode="true"] span[data-name] {
 
   color: var(--chord-color) !important;
+
+}
+
+
+/* INPUTS / SEARCH */
+
+body[data-dark-mode="true"] input,
+body[data-dark-mode="true"] textarea {
+
+  background: #1a1a1c !important;
+
+  color: white !important;
+
+  border-color: #333 !important;
+
+}
+
+
+/* BUTTONS */
+
+body[data-dark-mode="true"] button {
+
+  background-color: #1a1a1c !important;
+
+  border-color: #333 !important;
+
+}
+
+
+/* LINKS */
+
+body[data-dark-mode="true"] a {
+
+  color: #ffffff !important;
+
+}
+
+
+/* IMAGES/ADS KEEP NORMAL */
+
+body[data-dark-mode="true"] img,
+body[data-dark-mode="true"] video,
+body[data-dark-mode="true"] iframe {
+
+  opacity: 1 !important;
 
 }
 
@@ -267,13 +334,11 @@ body[data-dark-mode="false"] :fullscreen div {
 }
 
 
-/* DARK THEME FULLSCREEN */
+/* DARK FULLSCREEN ONLY FOR TAB AREA */
 
-body[data-dark-mode="true"] :fullscreen,
 body[data-dark-mode="true"] :fullscreen pre,
-body[data-dark-mode="true"] :fullscreen section,
 body[data-dark-mode="true"] :fullscreen code,
-body[data-dark-mode="true"] :fullscreen div {
+body[data-dark-mode="true"] :fullscreen .mg-action-bar {
 
   background: #0f0f10 !important;
 
