@@ -365,3 +365,98 @@ body[data-dark-mode="true"]::-webkit-scrollbar-thumb {
   border-radius: 10px;
 
 }
+
+/* =========================================
+   FIX NAVBAR IN LIGHT MODE
+========================================= */
+
+body[data-dark-mode="false"] header,
+body[data-dark-mode="false"] nav,
+body[data-dark-mode="false"] .rpAHE__2J3an.qrOqf.RwM4f.GPCdY.y_Ng5 {
+
+  background: white !important;
+
+}
+
+
+/* NAVBAR TEXT */
+
+body[data-dark-mode="false"] header *,
+body[data-dark-mode="false"] nav * {
+
+  color: black !important;
+
+}
+
+
+/* SEARCH BAR FIX */
+
+body[data-dark-mode="false"] input,
+body[data-dark-mode="false"] textarea {
+
+  background: white !important;
+
+  color: black !important;
+
+  border: 1px solid #ddd !important;
+
+}
+
+
+/* SPEED + TRANSPOSE BUTTON TEXT */
+
+body[data-dark-mode="true"] button *,
+body[data-dark-mode="true"] .krJf8 *,
+body[data-dark-mode="true"] .CF9h5 *,
+body[data-dark-mode="true"] [class*="speed"] *,
+body[data-dark-mode="true"] [class*="transpose"] * {
+
+  color: white !important;
+
+}
+
+
+/* LIGHT MODE BUTTON TEXT */
+
+body[data-dark-mode="false"] button *,
+body[data-dark-mode="false"] .krJf8 *,
+body[data-dark-mode="false"] .CF9h5 * {
+
+  color: black !important;
+
+}
+
+
+/* FIX VER1 DARK BACKGROUND */
+
+body[data-dark-mode="false"] ._3zygO,
+body[data-dark-mode="false"] .K_wg0,
+body[data-dark-mode="false"] .GwftQ,
+body[data-dark-mode="false"] aside *,
+body[data-dark-mode="false"] [class*="version"] {
+
+  background: white !important;
+
+  color: black !important;
+
+}
+
+
+/* KEEP CHORD SECTION DARK ONLY IN DARK MODE */
+
+body[data-dark-mode="true"] pre,
+body[data-dark-mode="true"] code.QsmqP {
+
+  background: #0f0f10 !important;
+
+}
+
+
+/* KEEP LIGHT MODE CHORD AREA LIGHT */
+
+body[data-dark-mode="false"] pre,
+body[data-dark-mode="false"] code.QsmqP {
+
+  background: white !important;
+
+}
